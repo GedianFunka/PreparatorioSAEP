@@ -17,3 +17,7 @@ server.get('/produtos', (req, res) => {
         res.json(resultado);
     });
 });
+
+server.listen(3000, () => {
+    console.log('Servidor rodando na porta 3000');
+});
