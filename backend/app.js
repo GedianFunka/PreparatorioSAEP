@@ -30,6 +30,20 @@ server.get('/produtos/ordenados', (req, res) => {
     });
 });
 
+//Rota: GET /produtos/:id
+server.get('/produtos/:id', (req, res)=>{
+    const {id} = req.params;
+
+    const sql = 'SELECT * FROM PRODUTO WHERE id_produto = ?'
+
+    connection.query(sql, [id],  (erro, resultado) => {
+        if(erro){
+            return res.status(500).json({erro: erro.message});
+        }
+        res.json(resultado[0]);
+    });
+});
+
 server.listen(5000, () => {
     console.log('Servidor rodando na porta 5000');
 });
