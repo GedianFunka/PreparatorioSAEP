@@ -44,6 +44,20 @@ server.get('/produtos/:id', (req, res)=>{
     });
 });
 
+//Rota: GET /produtos/busca/:nomes
+server.get('/produtos/busca/:nomes', (req, res) => {
+    const sql = 'SELECT * FROM PRODUTO WHERE nome LIKE ?';
+
+    const termoBusca = '%' + req.params.nomes + '%';
+
+    connection.query(sql, [termoBusca], (erro, resultado) => {
+        if(erro) {
+            return res.status(500).json({ erro: erro.message });
+        }
+        res.json(resultado);
+    });
+});
+
 server.listen(5000, () => {
     console.log('Servidor rodando na porta 5000');
 });
