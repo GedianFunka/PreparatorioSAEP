@@ -58,6 +58,27 @@ server.get('/produtos/busca/:nomes', (req, res) => {
     });
 });
 
+//Rota de Cadastrar Produto
+server.post('/produtos', (req, res) => {
+    const{nome, cor, textura, peso, unidade_medida, aplicacao, data_validade, estoque_minimo, estoque_atual, preco_unitario, id_categoria} = req.body;
+
+    if(nome == null || peso == null || unidade_medida == null || aplicacao == null || data_validade == null || estoque_minimo == null || estoque_atual == null || preco_unitario == null || id_categoria == null){
+        return res.status(400).json({erro: 'Todos os campos são obrigatórios'});
+    }
+
+    const sql = 'INSERT INTO PRODUTO (nome, cor, textura, peso, unidade_medida, aplicacao, data_validade, estoque_minimo, estoque_atual, preco_unitario, id_categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    
+    connection.query(sql, [nome, cor, textura, peso, unidade_medida, aplicacao, data_validade, estoque_minimo, estoque_atual, preco_unitario, id_categoria], (erro, resultado) => {
+        
+        if(erro){
+            return res.status(500).json({erro: erro.message});
+        }
+
+    res.json({mensagem: 'Produto cadastrado com sucesso', id_produto: resultado.insertId});
+
+    })
+})
+
 server.listen(5000, () => {
     console.log('Servidor rodando na porta 5000');
 });
